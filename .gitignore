@@ -4,5 +4,6 @@ __pycache__
 lw_projekt
 db.sqlite3
 /static
-/old
+/kopie
 .DS_Store
+tworzenie_lw_drw_base.txt
