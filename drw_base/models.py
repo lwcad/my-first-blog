@@ -13,8 +13,8 @@ class Drw(models.Model):
     data_wprow  = models.DateTimeField(
             default=timezone.now)                    # data wprowadzenia do bazy
 
-    #def publish(self):
-    #    self.published_date = timezone.now()
+    #def weryfikuj(self):
+    #    self.zweryfik = True()
     #    self.save()
 
     def __str__(self):

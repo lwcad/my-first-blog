@@ -5,15 +5,21 @@
     <body>
         <div>
             <h1><a href="/">DRW - baza - ma być - na razie wpisy na sztywno dla próby</a></h1>
+			<hr>
         </div>
 
-        <div>
-            <p>wprowadzony: 25.03.2022, 12:14</p>
-            <h2><a href="">Pierwszy rysunek</a></h2>
-            <p>1-4-0001</p>
-        </div>
+		{% for drw in drws %}
+            <div>
+                <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>
+                <p>Nazwa: {{ drw.nazwa }}</p>
+				<p>{{ post.text|linebreaksbr }}</p>
+				<hr>
+                {% comment %} jakiś komentarz {% endcomment %}
+            </div>
+	    {% endfor %}
 
         <div>
+		    <hr>
             <p>wprowadzony: 25.03.2022, 12:15</p>
             <h2><a href="">Drugi rysunek</a></h2>
             <p>1-4-0002</p>
