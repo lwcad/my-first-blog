@@ -1,28 +1,20 @@
-<html>
-    <head>
-        <title>Baza DRW ma być - na razie wpisy na sztywno dla próby</title>
-    </head>
-    <body>
-        <div>
-            <h1><a href="/">DRW - baza - ma być - na razie wpisy na sztywno dla próby</a></h1>
+{% extends 'drw_base/base.html' %}
+
+{% block content %}
+
+	{% for drw in drws %}
+		<div class="drw">
+			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
+			
+			<h2><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h2>
+			
+			<div class="nazwa">				
+				<p>Nazwa: {{ drw.nazwa }}</p>
+			</div>	
+			<p>{{ post.text|linebreaksbr }}</p>
 			<hr>
-        </div>
+			{% comment %} jakiś komentarz {% endcomment %}
+		</div>
+	{% endfor %}
 
-		{% for drw in drws %}
-            <div>
-                <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>
-                <p>Nazwa: {{ drw.nazwa }}</p>
-				<p>{{ post.text|linebreaksbr }}</p>
-				<hr>
-                {% comment %} jakiś komentarz {% endcomment %}
-            </div>
-	    {% endfor %}
-
-        <div>
-		    <hr>
-            <p>wprowadzony: 25.03.2022, 12:15</p>
-            <h2><a href="">Drugi rysunek</a></h2>
-            <p>1-4-0002</p>
-        </div>
-    </body>
-</html>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'drw_base/base.html' %}
+
+{% block content %}
+    <div class="drw">
+        {% if drw.nr_rys %}
+            <div class="drw">
+                {{ drw.nr_rys }}
+            </div>
+        {% endif %}
+		
+        <p>Nr archiwalny: {{ drw.nr_arch }}</p>
+		<div class="nazwa">		
+			<p>Nazwa: {{ drw.nazwa }}</p>
+		</div>
+        <p>Opis: {{ drw.opis }}</p>		
+        <p>Zweryfikowany: {{ drw.zweryfik }}</p>
+		<div class="data">
+            <p>Data wprowadzenia: {{ drw.data_wprow }}</p>
+		</div>
+		<div class="drw">
+			<p>Wprowadził: {{ drw.wprowadzil|linebreaksbr }}</p>				
+		</div>
+    </div>
+{% endblock %}
