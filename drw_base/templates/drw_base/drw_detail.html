@@ -7,6 +7,10 @@
                 {{ drw.nr_rys }}
             </div>
         {% endif %}
+
+		{% if user.is_authenticated %}
+			<a class="btn btn-default" href="{% url 'drw_edit' pk=drw.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>			 
+		{% endif %}		
 		
         <p>Nr archiwalny: {{ drw.nr_arch }}</p>
 		<div class="nazwa">		
