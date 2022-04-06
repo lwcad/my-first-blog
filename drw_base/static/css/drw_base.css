@@ -31,6 +31,14 @@ h1, h2, h3, h4 {
     color: #a60661;
 }
 
+.nazwa_pola {
+    color: #ffffff;
+    font-size: 18pt;
+    padding-left: 15px;
+	font-family: 'Arial';
+}
+
+
 .data {
     color: #8f9779;
 }

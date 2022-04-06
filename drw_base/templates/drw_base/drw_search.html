@@ -5,15 +5,17 @@
 	{% for drw in drws %}
 		<div class="drw">
 			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
-			
-			<h2><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h2>
+			<h2>Wynik wyszukiwania:</h2>
+
+			<h2>Nr rysunku: {{ drw.nr_rys }}</h2>
 			
 			<div class="nazwa">				
 				<p>Nazwa: {{ drw.nazwa }}</p>
 			</div>
-			<div class="nazwa_pola"> {% comment %} ten css nie działa {% endcomment %}
+			<div class="nazwa_pola">
     			<p>Nr archiwalny: {{ drw.nr_arch|linebreaksbr }}</p>
 			</div>
+			<p>pk = {{ drw.pk }}</p>
 			<hr>
 			{% comment %} jakiś komentarz {% endcomment %}
 		</div>
