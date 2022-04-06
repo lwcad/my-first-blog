@@ -1,24 +1,12 @@
 {% extends 'drw_base/base.html' %}
 
 {% block content %}
-
-	{% for drw in drws %}
-		<div class="drw">
-			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
-			<h2>Wynik wyszukiwania:</h2>
-
-			<h2>Nr rysunku: {{ drw.nr_rys }}</h2>
-			
-			<div class="nazwa">				
-				<p>Nazwa: {{ drw.nazwa }}</p>
-			</div>
-			<div class="nazwa_pola">
-    			<p>Nr archiwalny: {{ drw.nr_arch|linebreaksbr }}</p>
-			</div>
-			<p>pk = {{ drw.pk }}</p>
-			<hr>
-			{% comment %} jakiś komentarz {% endcomment %}
-		</div>
-	{% endfor %}
-
+    <h2>Szukaj w bazie</h2>
+	<form method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit">
+	</form>
 {% endblock %}
+
+

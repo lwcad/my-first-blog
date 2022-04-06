@@ -6,12 +6,12 @@
 		<div class="drw">
 			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
 			
-			<h2><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h2>
+			<h3><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h3>
 			
 			<div class="nazwa">				
 				<p>Nazwa: {{ drw.nazwa }}</p>
 			</div>
-			<div class="nazwa_pola"> {% comment %} ten css nie działa {% endcomment %}
+			<div class="nazwa_pola">
     			<p>Nr archiwalny: {{ drw.nr_arch|linebreaksbr }}</p>
 			</div>
 			<hr>

@@ -1,12 +1,59 @@
 {% extends 'drw_base/base.html' %}
 
 {% block content %}
-    <h2>Szukaj w bazie</h2>
-	<form method="post">
-		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit">
-	</form>
+    
+	<h2>Wynik wyszukiwania:</h2>
+	<div>
+	    Znaleziono : {{ iloscRysZnalez }} rysunków
+	</div>
+	
+	
+	{% for drw in drws %}
+		<div class="drw">
+			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
+			<!-- <h2>Nr rysunku: {{ drw.nr_rys }}</h2> -->
+			<!--<h3>Nr rysunku: {{ drw.nr_rys }} </h3> &nbsp &nbsp &nbsp &nbsp &nbsp -->
+			
+            <a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a> &nbsp &nbsp &nbsp &nbsp &nbsp
+			
+			<a class="btn btn-default" href="{% url 'pdf_view' pk=drw.pk %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
+			
+			<div class="nazwa">				
+				<p>Nazwa: {{ drw.nazwa }}</p>
+			</div>
+			
+			<div>
+    			<p>Nr archiwalny: {{ drw.nr_arch }}</p>
+			</div>
+			
+			<p>pk = {{ drw.pk|linebreaksbr }}</p>
+			<hr>
+			{% comment %} jakiś komentarz {% endcomment %}
+		</div>
+	{% endfor %}
+	Tu winny się wyświetlić PDF-y<br>
+    <embed
+	    src="Y:/rys_arch_nt/N1_01_03__/N1_01_03_01.pdf" 
+		type="application/pdf" 
+		frameBorder="0"
+		scrolling="auto"
+		height="30%" 
+		width="30%"
+		></embed>
+	<!-- dla Chrome -->	
+	<embed 
+	    type="application/pdf" 
+        src="Y:/rys_arch_nt/N1_01_03__/N1_01_03_01.pdf" 
+        width="100%" 
+		height="500" 
+		alt="pdf" 
+		pluginspage="http://www.adobe.com/products/acrobat/readstep2.html" 
+        background-color="0xFF525659" 
+		top-toolbar-height="56" 
+		full-frame="" 
+		internalinstanceid="21" 
+        title="CHROME">	
+		</embed>
+	<hr>	
+
 {% endblock %}
-
-
