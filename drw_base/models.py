@@ -13,9 +13,10 @@ class Drw(models.Model):
     data_wprow  = models.DateTimeField(
             default=timezone.now)                    # data wprowadzenia do bazy
 
-    #def weryfikuj(self):
-    #    self.zweryfik = True()
-    #    self.save()
+    def weryfikuj(self):
+        #self.zweryfik = True()
+        self.zweryfik = not self.zweryfik
+        self.save()
 
     def __str__(self):
         return 'Nr rysunku: ' + self.nr_rys

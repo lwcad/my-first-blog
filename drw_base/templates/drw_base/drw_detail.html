@@ -13,13 +13,27 @@
 		{% endif %}
 
 		<a class="btn btn-default" href="{% url 'pdf_view' pk=drw.pk %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
+
+		{% if user.is_authenticated %}
+		
+			{% if drw.zweryfik %}
+				<a class="btn btn-default" href="{% url 'drw_weryfikuj' pk=drw.pk %}">OD-Zweryfikuj</a>
+			{% else %}
+				<a class="btn btn-default" href="{% url 'drw_weryfikuj' pk=drw.pk %}">Zweryfikuj</a>
+			{% endif %}
+
+			{% comment %} Poniżej wprowadzam spacje aby oddzielić klawisz kasowania {% endcomment %}
+	        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
+			
+			<a class="btn btn-default" href="{% url 'drw_remove'    pk=drw.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+		{% endif %}
 		
         <p>Nr archiwalny: {{ drw.nr_arch }}</p>
 		<div class="nazwa">		
 			<p>Nazwa: {{ drw.nazwa }}</p>
 		</div>
-        <p>Opis: {{ drw.opis }}</p>		
-        <p>Zweryfikowany: {{ drw.zweryfik }}</p>
+        <p>Opis: {{ drw.opis }}</p>	
+
 		<div class="data">
             <p>Data wprowadzenia: {{ drw.data_wprow }}</p>
 		</div>
