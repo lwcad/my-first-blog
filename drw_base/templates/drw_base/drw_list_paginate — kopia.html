@@ -1,0 +1,72 @@
+{% extends 'drw_base/base.html' %}
+
+{% block content %}
+    <h3>Lista rysunków - stronicowana</h3>
+	<hr>
+
+	<div>
+		<span>
+			{% if pageN.has_previous %}
+				<a href="?page=1">&laquo; Początek &nbsp , &nbsp &nbsp </a>
+				<a href="?page={{ pageN.previous_page_number }}">poprzednia &nbsp , &nbsp &nbsp </a>
+			{% endif %}
+
+			<span>
+				Strona {{ pageN.number }} z {{ pageN.paginator.num_pages }}.
+				{% comment %} Strona {{ nrAktStrony }} z {{ pageN.paginator.num_pages }} {% endcomment %}
+			</span>
+
+			{% if pageN.has_next %}
+				<a href="?page={{ pageN.next_page_number }}"> &nbsp , &nbsp &nbsp następna &nbsp , &nbsp &nbsp </a>
+				<a href="?page={{ pageN.num_pages }}">Koniec &nbsp , &nbsp &nbsp &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+
+	<hr>
+	
+	{% comment %}{% for drw in drwsP %}{% endcomment %}
+	{% for drw in drwsP %}
+		<div class="drw">
+			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
+			
+			<h3><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h3>
+			
+			<div class="nazwa">				
+				<p>Nazwa: {{ drw.nazwa }}</p>
+			</div>
+			<div class="nazwa_pola">
+    			<p>Nr archiwalny: {{ drw.nr_arch|linebreaksbr }}</p>
+			</div>
+			<hr>
+			{% comment %} jakiś komentarz {% endcomment %}
+		</div>
+	{% endfor %}
+
+	<div>
+		<span>
+			{% if pageN.has_previous %}
+				<a href="?page=1">&laquo; first</a>
+				<a href="?page={{ pageN.previous_page_number }}">previous</a>
+			{% endif %}
+
+			<span>
+				Page {{ pageN.number }} of {{ pageN.paginator.num_pages }}.
+				{% comment %} Page {{ nrAktStrony }} of {{ pageN.paginator.num_pages }} {% endcomment %}
+			</span>
+
+			{% if pageN.has_next %}
+				<a href="?page={{ pageN.next_page_number }}">next</a>
+				<a href="?page={{ pageN.num_pages }}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+	<hr>
+{% endblock %}
+
+
+
+
+
+

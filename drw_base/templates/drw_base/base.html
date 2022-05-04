@@ -14,9 +14,12 @@
 	        <a href="{% url 'drw_new' %}"              class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             <a href="{% url 'drw_niezweryfik_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>			
 		{% endif %}
-		<a href="{% url 'get_szuk_lanc' %}" class="top-menu"><span class="glyphicon glyphicon-search" ></span></a>
-		<a href="{% url 'serwis' %}"        class="top-menu"><span class="glyphicon glyphicon-wrench" ></span></a>		
-		
+		<a href="{% url 'get_szuk_lanc'     %}" class="top-menu"><span class="glyphicon glyphicon-search"   ></span></a>
+		<a href="{% url 'drw_list_paginate' %}" class="top-menu"><span class="glyphicon glyphicon-list-alt" ></span></a>
+
+		{% comment %} To poniżej odkomentarzować dla działań serwisowych np. import bazy z pliku txt{% endcomment %}
+		{% comment %}<a href="{% url 'serwis' %}"        class="top-menu"><span class="glyphicon glyphicon-wrench" ></span></a>{% endcomment %}	
+
         <h1><a href="/">Baza Rysunków ( skan )</a></h1>
     </div>
     <div class="content container">
