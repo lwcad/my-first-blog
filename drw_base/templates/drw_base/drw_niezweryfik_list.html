@@ -4,18 +4,65 @@
     <h3>Lista rysunków - NIE-zweryfikowanych</h3>
 	<hr>
 	<hr>
-	{% for drw in drws %}
+	
+	<div>
+		<span>
+			{% if page_obj.has_previous %}
+				<a href="?page=1"> &nbsp <span class="glyphicon glyphicon-step-backward" > </a>
+				<a href="?page={{ page_obj.previous_page_number }}"> &nbsp <span class="glyphicon glyphicon-chevron-left"  > </a>
+			{% endif %}
+
+			<span>
+				&nbsp Str. {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+			</span>
+
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}"   > &nbsp <span class="glyphicon glyphicon-chevron-right" > </a>
+				<a href="?page={{ page_obj.paginator.num_pages }}"> &nbsp <span class="glyphicon glyphicon-step-forward"  > </a>
+				
+			{% endif %}
+		</span>
+	</div>
+	
+	{% for drw in page_obj %}
 		<div class="drw">
+			
 			<h3><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h3>
+
+			<a class="btn btn-default" href="{% url 'pdf_view' pk=drw.pk %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
 			
 			<div class="nazwa">				
 				<p>Nazwa: {{ drw.nazwa }}</p>
 			</div>
+
 			<div class="nazwa_pola">
     			<p>Nr archiwalny: {{ drw.nr_arch|linebreaksbr }}</p>
 			</div>
+			
+			<p>pk = {{ drw.pk|linebreaksbr }}</p>
+
 			<hr>
+			{% comment %} jakiś komentarz {% endcomment %}
 		</div>
 	{% endfor %}
+
+	<div>
+		<span>
+			{% if page_obj.has_previous %}
+				<a href="?page=1"> &nbsp <span class="glyphicon glyphicon-step-backward" > </a>
+				<a href="?page={{ page_obj.previous_page_number }}"> &nbsp <span class="glyphicon glyphicon-chevron-left"  > </a>
+			{% endif %}
+
+			<span>
+				&nbsp Str. {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+			</span>
+
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}"   > &nbsp <span class="glyphicon glyphicon-chevron-right" > </a>
+				<a href="?page={{ page_obj.paginator.num_pages }}"> &nbsp <span class="glyphicon glyphicon-step-forward"  > </a>
+				
+			{% endif %}
+		</span>
+	</div>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'drw_base/base.html' %}
 
 {% block content %}
-    <h3>Lista rysunków - stronicowana</h3>
+    <h3>Lista rysunków wszystkich - stronicowana</h3>
 	<hr>
 
 	<div>
@@ -25,10 +25,8 @@
 
 	<hr>
 	
-	{% comment %}{% for drw in drwsP %}{% endcomment %}
 	{% for drw in page_obj %}
 		<div class="drw">
-			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
 			
 			<h3><a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a></h3>
 			
@@ -66,7 +64,8 @@
 {% endblock %}
 
 
-
+{% comment %}{% for drw in drwsP %}{% endcomment %}
+<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
 
 
 

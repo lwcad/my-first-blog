@@ -1,16 +1,11 @@
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from django.shortcuts import render
-
-#może to jedno niżej już nie potrzebne ?
-#from django.db import models
-
 from .models import Drw
-from django.shortcuts import render, get_object_or_404
-from .forms import DrwForm
-from .forms import NameForm
-#from django.http import HttpResponse, HttpResponseRedirect
+from .forms import DrwForm, NameForm, NewUserForm
 from django.http import FileResponse, Http404
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
@@ -18,6 +13,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 #----------------------------------------------------------------------------
+# lista rysunków nie stronicowana - nie używana obecnie
 def drw_list(request):
     drws = Drw.objects.all().order_by('nr_rys')
     return render(request, 'drw_base/drw_list.html',{'drws': drws})
@@ -25,7 +21,7 @@ def drw_list(request):
 #----------------------------------------------------------------------------
 def drw_list_paginate(request):
     drws = Drw.objects.all().order_by('nr_rys')
-    iloscWierszyNaStronie = 3
+    iloscWierszyNaStronie = 10
 
     paginator = Paginator(drws, iloscWierszyNaStronie)
 
@@ -69,17 +65,38 @@ def drw_edit(request, pk):
     return render(request, 'drw_base/drw_edit.html', {'form': form})
 
 #----------------------------------------------------------------------------
-def drw_search_result(request):
-    global SzukajLancucha
-    drws = Drw.objects.filter(nr_rys__contains=SzukajLancucha).order_by('nr_rys')
-    iloscRysZnalez = len(drws)
+#def drw_search_result(request):
+#    global SzukajLancucha
+#    drws = Drw.objects.filter(nr_rys__contains=SzukajLancucha).order_by('nr_rys')
+#    iloscRysZnalez = len(drws)
+#    return render(request, 'drw_base/drw_search_result.html',{'drws': drws,'iloscRysZnalez':iloscRysZnalez} )    
 
-    return render(request, 'drw_base/drw_search_result.html',{'drws': drws,'iloscRysZnalez':iloscRysZnalez} )    
+def drw_search_result(request):
+    global SzukajLancucha, SzukajWpolu
+    
+    if SzukajWpolu == 'nr_rys' :     #'nr_rys':
+        drws = Drw.objects.filter(nr_rys__contains=SzukajLancucha).order_by('nr_rys')
+    elif SzukajWpolu == 'nazwa' :    # 'nazwa'
+        drws = Drw.objects.filter(nazwa__contains=SzukajLancucha).order_by('nazwa')
+    else:                            # 'nr_arch'
+        drws = Drw.objects.filter(nr_arch__contains=SzukajLancucha).order_by('nr_arch')
+
+    iloscRysZnalez = len(drws)
+    iloscWierszyNaStronie = 15
+
+    paginator = Paginator(drws, iloscWierszyNaStronie)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'drw_base/drw_search_result.html',{'page_obj': page_obj,'iloscRysZnalez':iloscRysZnalez})
 
 #----------------------------------------------------------------------------
 def get_szuk_lanc(request):
-    global SzukajLancucha
+    global SzukajLancucha, SzukajWpolu
     SzukajLancucha = ''
+    SzukajWpolu = ''
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -87,6 +104,7 @@ def get_szuk_lanc(request):
         # check whether it's valid:
         if form.is_valid():
             SzukajLancucha = form.cleaned_data['LancSzukany']
+            SzukajWpolu    = form.cleaned_data['szukaj_w_polu']
             return redirect( 'drw_search_result' )
 
     # if a GET (or any other method) we'll create a blank form
@@ -118,12 +136,12 @@ def delete_everything(self):
 
 #----------------------------------------------------------------------------
 def serwis(request):
-    
+
     # importowanie do bazy z pliku tekstowego - Początek
     me = User.objects.get(username='wieslaw.legucki')
 
     # czytam dane z pliku 
-    filename='C:\\djangogirls\\proby_lw\\baza_rys_2022_04_07__08_21.txt'
+    filename='C:\\djangogirls\\proby_lw\\baza_rys_2022_05_05__10_07.txt'
     #filename='C:\\djangogirls\\proby_lw\\baza_rys_2022_04_07__08_21-oryginal.txt'
     
     f=open(filename,'r')  # open file for reading
@@ -155,21 +173,31 @@ def serwis(request):
     return render(request, 'drw_base/serwis.html')
 
 #----------------------------------------------------------------------------
+#def drw_niezweryfik_list(request):
+#    drws = Drw.objects.filter(zweryfik=False).order_by('nr_rys')
+#    return render(request, 'drw_base/drw_niezweryfik_list.html', {'drws': drws})
 def drw_niezweryfik_list(request):
     drws = Drw.objects.filter(zweryfik=False).order_by('nr_rys')
-    return render(request, 'drw_base/drw_niezweryfik_list.html', {'drws': drws})
+    iloscWierszyNaStronie = 10
+
+    paginator = Paginator(drws, iloscWierszyNaStronie)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'drw_base/drw_niezweryfik_list.html',{'page_obj': page_obj})    
     
 #----------------------------------------------------------------------------
 def drw_weryfikuj(request, pk):
     drw = get_object_or_404(Drw, pk=pk)
     drw.weryfikuj()
-    return redirect('drw_detail', pk=pk)
+    return redirect('drw_base/drw_detail', pk=pk) # na djangogirls było bez 'drw_base/'
     
 #----------------------------------------------------------------------------
 def drw_remove(request, pk):
     drw = get_object_or_404(Drw, pk=pk)
     drw.delete()
-    return redirect('drw_list')
+    return redirect('drw_base/drw_list_paginate')
 
 
 #----------------------------------------------------------------------------
@@ -183,5 +211,42 @@ def drop_table(self):
 """
 #----------------------------------------------------------------------------
 
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Rejestracja zakończona sukcesem." )
+			return redirect('get_szuk_lanc')
+		messages.error(request, 'Nie udało się zarejestrować. Głędne dane.')
+	form = NewUserForm()
+	return render (request=request, template_name='drw_base/register.html', context={'register_form':form})
 
+#----------------------------------------------------------------------------
 
+def login_request(request):
+	if request.method == "POST":
+		form = AuthenticationForm(request, data=request.POST)
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				login(request, user)
+				messages.info(request, f'Zalogowałeś się jako {username}.')
+				return redirect('get_szuk_lanc')
+			else:
+				messages.error(request,'Błędna nazwa użytkownika lub hasło.')
+		else:
+			messages.error(request,'Błędna nazwa użytkownika lub hasło.')
+	form = AuthenticationForm()
+	return render(request=request, template_name='drw_base/login.html', context={"login_form":form})
+
+#----------------------------------------------------------------------------
+
+def logout_request(request):
+	logout(request)
+	messages.info(request, 'Wylogowałeś się.') 
+	return redirect('get_szuk_lanc')
+#----------------------------------------------------------------------------

@@ -2,36 +2,100 @@
 
 {% block content %}
     
-	<h2>Wynik wyszukiwania:</h2>
+	<h2>Wynik wyszukiwania - stronicowane :</h2>
 	<div>
 	    Znaleziono : {{ iloscRysZnalez }} rysunków
 	</div>
-	
-	
-	{% for drw in drws %}
-		<div class="drw">
-			<!-- komentarz <h2><a href="">Nr rysunku: {{ drw.nr_rys }}</a></h2>-->
-			<!-- <h2>Nr rysunku: {{ drw.nr_rys }}</h2> -->
-			<!--<h3>Nr rysunku: {{ drw.nr_rys }} </h3> &nbsp &nbsp &nbsp &nbsp &nbsp -->
+
+	<div>
+		<span>
+			{% if page_obj.has_previous %}
+				<a href="?page=1"> &nbsp <span class="glyphicon glyphicon-step-backward" > </a>
+				<a href="?page={{ page_obj.previous_page_number }}"> &nbsp <span class="glyphicon glyphicon-chevron-left"  > </a>
+			{% endif %}
+
+			<span>
+				&nbsp Str. {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+			</span>
+
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}"   > &nbsp <span class="glyphicon glyphicon-chevron-right" > </a>
+				<a href="?page={{ page_obj.paginator.num_pages }}"> &nbsp <span class="glyphicon glyphicon-step-forward"  > </a>
+				
+			{% endif %}
+		</span>
+	</div>
+
+	<hr>
+
+	<table border=0 style="width:100%">
+		<tr>
+			<th style="width:8%" >PDF</th>		
+			<th style="width:15%">Nr rysunku</th>
+			<th style="width:75%">Nazwa</th>
+			<th>Nr arch.</th>
+		</tr>
+
+	{% for drw in page_obj %}
+		{% comment %}<div class="drw">{% endcomment %}
+
+			<tr>
+
+				<td>
+					<a class="btn btn-default" href="{% url 'pdf_view' pk=drw.pk %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
+				</td>
+
+				<td>
+					<a href="{% url 'drw_detail' pk=drw.pk %}">{{ drw.nr_rys }}</a>
+				</td>
+				
+				<td>
+					<div class="nazwa">				
+						<p>{{ drw.nazwa }}</p>
+					</div>
+				</td>
+
+				<td>
+					<div class="nazwa_pola">
+						<p>{{ drw.nr_arch|linebreaksbr }}</p>
+					</div>
+				</td>
+
+				{% comment %}				 
+				<td>
+					<p>pk = {{ drw.pk|linebreaksbr }}</p>
+				</td>
+				{% endcomment %}
+				
+			</tr>
 			
-            <a href="{% url 'drw_detail' pk=drw.pk %}">Nr rysunku: {{ drw.nr_rys }}</a> &nbsp &nbsp &nbsp &nbsp &nbsp
-			
-			<a class="btn btn-default" href="{% url 'pdf_view' pk=drw.pk %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
-			
-			<div class="nazwa">				
-				<p>Nazwa: {{ drw.nazwa }}</p>
-			</div>
-			
-			<div>
-    			<p>Nr archiwalny: {{ drw.nr_arch }}</p>
-			</div>
-			
-			<p>pk = {{ drw.pk|linebreaksbr }}</p>
-			<hr>
 			{% comment %} jakiś komentarz {% endcomment %}
-		</div>
+		{% comment %}</div>{% endcomment %}
 	{% endfor %}
+
+	</table>
 	
+	<hr>
+	
+	<div>
+		<span>
+			{% if page_obj.has_previous %}
+				<a href="?page=1"> &nbsp <span class="glyphicon glyphicon-step-backward" > </a>
+				<a href="?page={{ page_obj.previous_page_number }}"> &nbsp <span class="glyphicon glyphicon-chevron-left"  > </a>
+			{% endif %}
+
+			<span>
+				&nbsp Str. {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+			</span>
+
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}"   > &nbsp <span class="glyphicon glyphicon-chevron-right" > </a>
+				<a href="?page={{ page_obj.paginator.num_pages }}"> &nbsp <span class="glyphicon glyphicon-step-forward"  > </a>
+				
+			{% endif %}
+		</span>
+	</div>
+
 	{% comment %} 
 	Tu winny się wyświetlić PDF-y<br>
     <embed
@@ -60,3 +124,5 @@
     {% endcomment %}
 	
 {% endblock %}
+
+{% comment %} jakiś komentarz {% endcomment %}
